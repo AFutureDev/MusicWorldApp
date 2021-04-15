@@ -3,7 +3,11 @@ import { Text, View, Image, FlatList, TouchableOpacity } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
-import TrackPlayer, { usePlaybackState, STATE_PLAYING, useTrackPlayerEvents, TrackPlayerEvents } from 'react-native-track-player';
+import TrackPlayer, { usePlaybackState, 
+                      STATE_PLAYING, 
+                      useTrackPlayerEvents, 
+                      TrackPlayerEvents, 
+                      useTrackPlayerProgress} from 'react-native-track-player';
 
 import tracks from '../../data/playlist';
 
@@ -11,7 +15,8 @@ import styles from './styles';
 
 
 const songDet = {
-    imageUri: 'https://images.genius.com/1227410d9cc1989bde09273b308addf8.640x640x1.jpg',
+    id: '1',
+    imageUri: tracks.artwork,
     title: 'JuJu',
     artist: 'Zubi',
     artwork: 'https://images.genius.com/1227410d9cc1989bde09273b308addf8.640x640x1.jpg',
@@ -22,10 +27,16 @@ const events = [
     TrackPlayerEvents.PLAYBACK_ERROR
   ];
 
-const PlayerWidget = () => {
+const PlayerWidget = (props) => {
     const playbackState = usePlaybackState();
 
+    const progress = useTrackPlayerProgress();
+
     const [playerState, setPlayerState] = useState(null);
+
+    const [duration, setDuration] = useState(null);
+
+    const [position, setPosition] = useState(null);
 
     const isPlaying = playerState === STATE_PLAYING;
 
@@ -35,6 +46,8 @@ const PlayerWidget = () => {
         }
         if (event.type === TrackPlayerEvents.PLAYBACK_STATE) {
         setPlayerState(event.state);
+        setDuration(event.positionMilis);
+        setPosition(event.positionMilis);
      }
     });
     
@@ -73,6 +86,7 @@ const PlayerWidget = () => {
         return () => TrackPlayer.destroy();
       }, [])
 
+      
       const onPressPlayPauseButton = async () => {
           if (playbackState === TrackPlayer.STATE_PAUSED && playerState) {
             await TrackPlayer.play();
@@ -85,10 +99,12 @@ const PlayerWidget = () => {
 
         return (
             <View style={styles.container}>
-                <Image source={{ uri: songDet.imageUri}} style={styles.image} />
+              <View style={[styles.progress, { width: `${progress.position}%`}]} />
+              <View style={styles.row}>
+                <Image source={{ uri: songDet.artwork}} style={styles.image} />
                 <View style={styles.rightContainer}>
                     <View style={styles.nameContainer}>
-                        <Text style={styles.title}>{songDet.title}</Text>
+                        <Text style={styles.title}>{ tracks.title }</Text>
                         <Text style={styles.artist}>{songDet.artist}</Text>
                     </View>
                     <View style={styles.iconContainer}>
@@ -103,6 +119,8 @@ const PlayerWidget = () => {
                         </TouchableOpacity>
                     </View>
                 </View>
+              </View>
+                
             </View>
         )
     }

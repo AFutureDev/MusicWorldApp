@@ -1,17 +1,18 @@
 export default 
-[
-    {
-    id: '1',
-    url: require("../src/songs/frog.wav"),
-    title: 'JuJu',
-    artist: 'Zubi',
-    artwork: 'https://images.genius.com/1227410d9cc1989bde09273b308addf8.640x640x1.jpg',
-    },
-    {
-    id: 2,
-    url: 'https://r1---sn-hxb5oxu-30oe.googlevideo.com/videoplayback?expire=1618444203&ei=Syt3YLWRMtCkj-8P496BiAU&ip=149.28.103.230&id=7cdb98e29df9818d&itag=251&source=youtube&requiressl=yes&vprv=1&mime=audio%2Fwebm&ns=BSOUXtivpQ3xmKqTk-pu6JoF&gir=yes&clen=1760444&otfp=1&dur=105.241&lmt=1617543932773593&keepalive=yes&fexp=24001373%2C24007246&c=WEB&txp=6211222&n=ZpoMdSIwayMxHnP&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cvprv%2Cmime%2Cns%2Cgir%2Cclen%2Cotfp%2Cdur%2Clmt&sig=AOq0QJ8wRAIgP7UQYSo1sbD0X0Rp_IXb5i7svGVGtZxC-rqQu8EiT-wCIGtqNr60ZZ_I5LfCxy6cv1UK6doEs18jdyBBRwTUdtzI&cms_redirect=yes&mh=oQ&mip=88.222.68.182&mm=31&mn=sn-hxb5oxu-30oe&ms=au&mt=1618422284&mv=m&mvi=1&pl=17&lsparams=mh,mip,mm,mn,ms,mv,mvi,pl&lsig=AG3C_xAwRgIhAM4PO8Nde8qDYGcPNRCUEfDl-XByli-ve8cw5EaaUvSZAiEA3KI1CdS4LqCUCxQkFqcuDqfUir5Kc8ZQ6Hfg6wC7rSQ%3D',
-    title: "Advertising",
-    artist: 'Kazkas',
-    artwork: 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg'
-    },
-]
+    [
+        {
+        id: '1',
+        url: 'https://muzikos.s3.us-east-2.amazonaws.com/R%C3%B6yksopp+-+Here+She+Comes+Again+(ft.+Jamie+Irrepressible)_Tengo+Ganas+de+Ti_I+want+You_(Video).mp3',
+        title: 'Here She Comes Again',
+        artist: 'Röyksopp ',
+        artwork: 'https://lastfm.freetls.fastly.net/i/u/770x0/691280d3fa9c2cc21d14289ad3e8494c.jpg',
+        duration: 402,
+        },
+        {
+        id: 2,
+        url: 'https://muzikos.s3.us-east-2.amazonaws.com/Tiesto+-+The+Business+(Official+Lyric+Video).mp3',
+        title: "The Business ",
+        artist: 'Tiesto',
+        artwork: 'https://img.discogs.com/octwjAp09BTBX-2b84HZ_Oyx0ss=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-15974243-1601193317-5160.jpeg.jpg'
+        },
+    ]

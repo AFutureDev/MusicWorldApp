@@ -6,10 +6,16 @@ const styles = StyleSheet.create({
         bottom: 49,
         width: '100%',
         backgroundColor: "#fff",
-        flexDirection: 'row',
         borderWidth: 2,
         borderColor: '#000',
-        alignItems: 'center',
+    },
+    progress: {
+        height: 3,
+        backgroundColor: '#bcbcbc',
+
+    },
+    row: {
+        flexDirection: 'row',
     },
     image: {
         width: 65,
