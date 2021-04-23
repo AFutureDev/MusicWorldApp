@@ -21,11 +21,24 @@ const songDet = {
     artist: 'Zubi',
     artwork: 'https://images.genius.com/1227410d9cc1989bde09273b308addf8.640x640x1.jpg',
 }
+const songDet2 = {
+    id: '1',
+    imageUri: tracks.artwork,
+    title: 'JuJu',
+    artist: 'Zubi',
+    artwork: 'https://images.genius.com/1227410d9cc1989bde09273b308addf8.640x640x1.jpg',
+}
+
+// const songsDetails = [...songDet, ...songDet2];
 
 const events = [
     TrackPlayerEvents.PLAYBACK_STATE,
     TrackPlayerEvents.PLAYBACK_ERROR
   ];
+
+  const propsTrack = {
+    trackDetails: tracks,
+  }
 
 const PlayerWidget = (props) => {
     const playbackState = usePlaybackState();
@@ -40,6 +53,10 @@ const PlayerWidget = (props) => {
 
     const isPlaying = playerState === STATE_PLAYING;
 
+    const [trackTitle, setTrackTitle] = useState("");
+    const [trackArtwork, setTrackArtwork] = useState();
+    const [trackArtist, setTrackArtist] = useState("");
+
     useTrackPlayerEvents(events, (event) => {
         if (event.type === TrackPlayerEvents.PLAYBACK_ERROR) {
         console.warn('An error occured while playing the current track.');
@@ -48,7 +65,17 @@ const PlayerWidget = (props) => {
         setPlayerState(event.state);
         setDuration(event.positionMilis);
         setPosition(event.positionMilis);
-     }
+        }
+    });
+
+    useTrackPlayerEvents(["playback-track-changed"], async event => {
+      if (event.type === TrackPlayer.TrackPlayerEvents.PLAYBACK_TRACK_CHANGED) {
+        const track = await TrackPlayer.getTrack(event.nextTrack);
+        const { title, artist, artwork, } = track || {};
+        setTrackTitle(title);
+        setTrackArtist(artist);
+        setTrackArtwork(artwork);
+      }
     });
     
 
@@ -101,11 +128,11 @@ const PlayerWidget = (props) => {
             <View style={styles.container}>
               <View style={[styles.progress, { width: `${progress.position}%`}]} />
               <View style={styles.row}>
-                <Image source={{ uri: songDet.artwork}} style={styles.image} />
+              <Image source={{ uri: trackArtwork }} style={styles.image} />
                 <View style={styles.rightContainer}>
                     <View style={styles.nameContainer}>
-                        <Text style={styles.title}>{ tracks.title }</Text>
-                        <Text style={styles.artist}>{songDet.artist}</Text>
+                        <Text style={styles.title}>{ trackTitle }</Text>
+                        <Text style={styles.artist}>{ trackArtist }</Text>
                     </View>
                     <View style={styles.iconContainer}>
                         <TouchableOpacity onPress={() => TrackPlayer.skipToPrevious}>

@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     },
     progress: {
         height: 3,
-        backgroundColor: '#bcbcbc',
+        backgroundColor: '#adf802',
 
     },
     row: {
@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
     nameContainer: {
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'center'
     },
     iconContainer: {
         flexDirection: 'row',
