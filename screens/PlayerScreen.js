@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import TrackPlayer from 'react-native-track-player';
+import TrackPlayer, { useTrackPlayerProgress } from 'react-native-track-player';
 import tracks from '../data/playlist';
 
 TrackPlayer.updateOptions({
@@ -10,6 +10,13 @@ TrackPlayer.updateOptions({
 })
 
 const PlayerScreen = () => {
+
+  const progress = TrackPlayer.useTrackPlayerProgress();
+  const { position, bufferedPosition, duration } = useTrackPlayerProgress(1000, null)
+
+  const getProgress = () => {
+    return (position / duration) * 100;
+  }
 
   const setUpTrackPlayer = async () => {
     try{
@@ -37,6 +44,8 @@ const PlayerScreen = () => {
 
   return(
     <View style={styles.container}>
+      <View style={[styles.progress, { width: `${(position /duration)*100}%`, alignSelf: 'flex-start' }]}></View>
+      {/* <Text style={styles.progress}>Buffered progress: {bufferedPosition} seconds buffered out of {duration} total</Text> */}
       <View style={styles.row}>
         <TouchableOpacity style={styles.btn} onPress={() => TrackPlayer.pause()}>
           <Text style={styles.text}>PAUSE</Text>
@@ -63,6 +72,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#000',
+  },
+  progress: {
+    height: 3,
+    backgroundColor: '#adf802',
+    color: '#fff',
   },
   row: {
     flexDirection: 'row',

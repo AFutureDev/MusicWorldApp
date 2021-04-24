@@ -7,7 +7,10 @@ import TrackPlayer, { usePlaybackState,
                       STATE_PLAYING, 
                       useTrackPlayerEvents, 
                       TrackPlayerEvents, 
-                      useTrackPlayerProgress} from 'react-native-track-player';
+                      useTrackPlayerProgress,
+                      getDuration,
+                      getPosition,
+                      } from 'react-native-track-player';
 
 import tracks from '../../data/playlist';
 
@@ -43,13 +46,14 @@ const events = [
 const PlayerWidget = (props) => {
     const playbackState = usePlaybackState();
 
-    const progress = useTrackPlayerProgress();
+    // const progress = useTrackPlayerProgress();
 
     const [playerState, setPlayerState] = useState(null);
 
-    const [duration, setDuration] = useState(null);
+    // const [duration, setDuration] = useState(null);
 
-    const [position, setPosition] = useState(null);
+    // const [position, setPosition] = useState(null);
+    const { position, bufferedPosition, duration } = useTrackPlayerProgress(1000, null)
 
     const isPlaying = playerState === STATE_PLAYING;
 
@@ -63,8 +67,8 @@ const PlayerWidget = (props) => {
         }
         if (event.type === TrackPlayerEvents.PLAYBACK_STATE) {
         setPlayerState(event.state);
-        setDuration(event.positionMilis);
-        setPosition(event.positionMilis);
+        // setDuration(event.positionMilis);
+        // setPosition(event.positionMilis);
         }
     });
 
@@ -126,7 +130,9 @@ const PlayerWidget = (props) => {
 
         return (
             <View style={styles.container}>
-              <View style={[styles.progress, { width: `${progress.position}%`}]} />
+              {/* <View style={[styles.progress, { width: `${position}%`} ]} /> */}
+              <View style={[styles.progress, { width: `${(position / duration)*100}%`, alignSelf: 'flex-start' }]}></View>
+              <Text>Track progress: {position} seconds out of {duration} total</Text>
               <View style={styles.row}>
               <Image source={{ uri: trackArtwork }} style={styles.image} />
                 <View style={styles.rightContainer}>

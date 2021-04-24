@@ -1,7 +1,9 @@
 import { StyleSheet } from 'react-native';
+import { getDuration } from 'react-native-track-player';
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         position: 'absolute',
         bottom: 49,
         width: '100%',
@@ -12,7 +14,6 @@ const styles = StyleSheet.create({
     progress: {
         height: 3,
         backgroundColor: '#adf802',
-
     },
     row: {
         flexDirection: 'row',
