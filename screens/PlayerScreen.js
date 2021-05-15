@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Button } from 'react-native';
 import TrackPlayer, { useTrackPlayerProgress } from 'react-native-track-player';
 import tracks from '../data/playlist';
 
@@ -9,7 +9,7 @@ TrackPlayer.updateOptions({
   compactCapabilities: [TrackPlayer.CAPABILITY_PLAY, TrackPlayer.CAPABILITY_PAUSE],
 })
 
-const PlayerScreen = () => {
+const PlayerScreen = ({navigation}) => {
 
   const progress = TrackPlayer.useTrackPlayerProgress();
   const { position, bufferedPosition, duration } = useTrackPlayerProgress(1000, null)

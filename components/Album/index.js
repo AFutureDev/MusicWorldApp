@@ -9,18 +9,21 @@ import React from 'react';
  import styles from './styles';
  import { AlbumType } from '../../types';
 import AlbumScreen from '../../screens/AlbumScreen';
+import albumDetails from '../../data/albumDetails';
 
 const AlbumProps = {
-    album: AlbumType,
+    album: albumDetails,
  }
  
  
  const AlbumComponent = (AlbumProps) => {
 
+
+
   const navigation = useNavigation();
 
   const onPress = () => {
-    //console.warn(`Album Pressed ${AlbumProps.album.artistsHeadline}`)
+    console.warn(`Album Pressed ${AlbumProps.album.id}`)
     navigation.navigate('AlbumScreen', { id: AlbumProps.album.id});
   }
 

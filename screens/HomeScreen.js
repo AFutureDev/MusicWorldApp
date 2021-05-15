@@ -43,6 +43,7 @@ import albumCategories from '../data/albumCategories';
  
  const HomeScreen = () => {
    return (
+    
      <View style={styles.container}>
       <FlatList 
         data={albumCategories}

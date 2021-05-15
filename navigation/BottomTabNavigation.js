@@ -7,12 +7,16 @@ import HomeScreen from '../screens/HomeScreen';
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import AntDesign from "react-native-vector-icons/AntDesign";
 import Feather from "react-native-vector-icons/Feather";
 import SearchScreen from '../screens/SearchScreen';
 import PlayerScreen from '../screens/PlayerScreen';
 import LibraryScreen from '../screens/LibraryScreen';
 import AlbumScreen from '../screens/AlbumScreen';
 import PlayerWidget from '../components/PlayerWidget';
+import Profile from '../screens/ProfileScreen';
+import ProfileScreen from '../screens/ProfileScreen';
+import MyStack from '../routes/MyStack';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -48,13 +52,13 @@ function MyTabs() {
                 tabBarIcon: ({color}) => <MaterialIcons name="library-music" size={30} style={{ marginBottom: -3 }} color={color} />,
             }}      
         />
-        <Tab.Screen 
-            name="Player" 
-            component={PlayerScreen} 
+        <Tab.Screen
+            name="Player"
+            component={PlayerScreen}
             options={{
-                tabBarIcon: ({color}) => <Ionicons name="person" size={30} style={{ marginBottom: -3 }} color={color} />,
-            }}      
-        />
+              tabBarIcon: ({color}) => <AntDesign name="playcircleo" size={30} style={{ marginBottom: -3 }} color={color} />,
+            }}
+             />
       </Tab.Navigator>
     );
   }
@@ -62,8 +66,7 @@ function MyTabs() {
 const BottomTabNavigation = () => {
     return (
       <NavigationContainer>
-        <MyTabs />
-        <PlayerWidget />
+         <MyTabs />
       </NavigationContainer>
     );
   }

@@ -7,8 +7,8 @@ import React from 'react';
  const SearchScreen = () => {
    return (
      <View>
-         <View style={{flex: 1, backgroundColor: "#fff"}}>
-             <Text>Search</Text>
+         <View>
+             <Text style={{backgroundColor: "#000"}}>Search</Text>
          </View>
      </View>
    )

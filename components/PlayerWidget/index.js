@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Text, View, Image, FlatList, TouchableOpacity } from 'react-native';
+import { Text, View, Image, FlatList, TouchableOpacity, TouchableHighlight, Button } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -15,22 +15,25 @@ import TrackPlayer, { usePlaybackState,
 import tracks from '../../data/playlist';
 
 import styles from './styles';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import PlayerScreen from '../../screens/PlayerScreen';
 
 
-const songDet = {
-    id: '1',
-    imageUri: tracks.artwork,
-    title: 'JuJu',
-    artist: 'Zubi',
-    artwork: 'https://images.genius.com/1227410d9cc1989bde09273b308addf8.640x640x1.jpg',
-}
-const songDet2 = {
-    id: '1',
-    imageUri: tracks.artwork,
-    title: 'JuJu',
-    artist: 'Zubi',
-    artwork: 'https://images.genius.com/1227410d9cc1989bde09273b308addf8.640x640x1.jpg',
-}
+// const songDet = {
+//     id: '1',
+//     imageUri: tracks.artwork,
+//     title: 'JuJu',
+//     artist: 'Zubi',
+//     artwork: 'https://images.genius.com/1227410d9cc1989bde09273b308addf8.640x640x1.jpg',
+// }
+// const songDet2 = {
+//     id: '1',
+//     imageUri: tracks.artwork,
+//     title: 'JuJu',
+//     artist: 'Zubi',
+//     artwork: 'https://images.genius.com/1227410d9cc1989bde09273b308addf8.640x640x1.jpg',
+// }
 
 // const songsDetails = [...songDet, ...songDet2];
 
@@ -43,20 +46,18 @@ const events = [
     trackDetails: tracks,
   }
 
-const PlayerWidget = (props) => {
+const PlayerWidget = ({ navigation }) => {
+  const goPlayerScreen = () => {
+    navigation.navigate("Player")
+  }
+
     const playbackState = usePlaybackState();
-
     // const progress = useTrackPlayerProgress();
-
     const [playerState, setPlayerState] = useState(null);
-
     // const [duration, setDuration] = useState(null);
-
     // const [position, setPosition] = useState(null);
     const { position, bufferedPosition, duration } = useTrackPlayerProgress(1000, null)
-
     const isPlaying = playerState === STATE_PLAYING;
-
     const [trackTitle, setTrackTitle] = useState("");
     const [trackArtwork, setTrackArtwork] = useState();
     const [trackArtist, setTrackArtist] = useState("");
@@ -125,26 +126,41 @@ const PlayerWidget = (props) => {
             await TrackPlayer.pause();
           }
         }
-      
 
+        async function togglePlayback() {
+          const currentTrack = await TrackPlayer.getCurrentTrack();
+          if (currentTrack == null) {
+            await TrackPlayer.reset();
+            await TrackPlayer.add(tracks);
+            await TrackPlayer.play();
+          } else {
+            if (playbackState === TrackPlayer.STATE_PAUSED) {
+              await TrackPlayer.play();
+            } else {
+              await TrackPlayer.pause();
+            }
+          }
+        }
+    
 
         return (
             <View style={styles.container}>
+              <View>
               {/* <View style={[styles.progress, { width: `${position}%`} ]} /> */}
               <View style={[styles.progress, { width: `${(position / duration)*100}%`, alignSelf: 'flex-start' }]}></View>
-              <Text>Track progress: {position} seconds out of {duration} total</Text>
+              {/* <Text>Track progress: {position} seconds out of {duration} total</Text> */}
               <View style={styles.row}>
-              <Image source={{ uri: trackArtwork }} style={styles.image} />
+              <Image source={{ uri: trackArtwork }} style={styles.image} />  
+                <View style={styles.nameContainer}>
+                  <Text style={styles.title}>{ trackTitle }</Text>
+                  <Text style={styles.artist}>{ trackArtist }</Text>
+                </View>
                 <View style={styles.rightContainer}>
-                    <View style={styles.nameContainer}>
-                        <Text style={styles.title}>{ trackTitle }</Text>
-                        <Text style={styles.artist}>{ trackArtist }</Text>
-                    </View>
                     <View style={styles.iconContainer}>
-                        <TouchableOpacity onPress={() => TrackPlayer.skipToPrevious}>
-                            <Entypo name="controller-jump-to-start" size={30} />
+                        <TouchableOpacity>
+                            <AntDesign name="hearto" size={30} />
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={onPressPlayPauseButton}>
+                        <TouchableOpacity onPress={togglePlayback}>
                             <FontAwesome name={isPlaying ? 'pause' : 'play'} size={30} style={{ color: "#000"}}/>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => TrackPlayer.skipToNext()}>
@@ -153,8 +169,9 @@ const PlayerWidget = (props) => {
                     </View>
                 </View>
               </View>
-                
-            </View>
+              </View>
+              </View>
+         
         )
     }
 

@@ -20,7 +20,7 @@ const AlbumScreen = (props) => {
             <FlatList 
                 data={albumDetails.songs}
                 renderItem={({ item }) => <SongListITem song={item} />}
-                keyExtractor ={(item) => item.id }
+                keyExtractor ={(item) => item.id}
                 ListHeaderComponent={() => <AlbumHeader album={albumDetails}/>}
             />
         </View>
