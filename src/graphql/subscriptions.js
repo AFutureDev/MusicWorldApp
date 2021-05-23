@@ -6,7 +6,7 @@ export const onCreateAlbumCategory = /* GraphQL */ `
     onCreateAlbumCategory {
       id
       title
-      Albums {
+      albums {
         items {
           id
           name
@@ -30,7 +30,7 @@ export const onUpdateAlbumCategory = /* GraphQL */ `
     onUpdateAlbumCategory {
       id
       title
-      Albums {
+      albums {
         items {
           id
           name
@@ -54,7 +54,7 @@ export const onDeleteAlbumCategory = /* GraphQL */ `
     onDeleteAlbumCategory {
       id
       title
-      Albums {
+      albums {
         items {
           id
           name
@@ -85,11 +85,11 @@ export const onCreateAlbum = /* GraphQL */ `
       songs {
         items {
           id
-          imageUri
           url
           title
           artist
           artwork
+          imageUri
           albumId
           createdAt
           updatedAt
@@ -100,7 +100,7 @@ export const onCreateAlbum = /* GraphQL */ `
       albumCategory {
         id
         title
-        Albums {
+        albums {
           nextToken
         }
         createdAt
@@ -123,11 +123,11 @@ export const onUpdateAlbum = /* GraphQL */ `
       songs {
         items {
           id
-          imageUri
           url
           title
           artist
           artwork
+          imageUri
           albumId
           createdAt
           updatedAt
@@ -138,7 +138,7 @@ export const onUpdateAlbum = /* GraphQL */ `
       albumCategory {
         id
         title
-        Albums {
+        albums {
           nextToken
         }
         createdAt
@@ -161,11 +161,11 @@ export const onDeleteAlbum = /* GraphQL */ `
       songs {
         items {
           id
-          imageUri
           url
           title
           artist
           artwork
+          imageUri
           albumId
           createdAt
           updatedAt
@@ -176,7 +176,7 @@ export const onDeleteAlbum = /* GraphQL */ `
       albumCategory {
         id
         title
-        Albums {
+        albums {
           nextToken
         }
         createdAt
@@ -191,11 +191,11 @@ export const onCreateSong = /* GraphQL */ `
   subscription OnCreateSong {
     onCreateSong {
       id
-      imageUri
       url
       title
       artist
       artwork
+      imageUri
       albumId
       album {
         id
@@ -226,11 +226,11 @@ export const onUpdateSong = /* GraphQL */ `
   subscription OnUpdateSong {
     onUpdateSong {
       id
-      imageUri
       url
       title
       artist
       artwork
+      imageUri
       albumId
       album {
         id
@@ -261,11 +261,11 @@ export const onDeleteSong = /* GraphQL */ `
   subscription OnDeleteSong {
     onDeleteSong {
       id
-      imageUri
       url
       title
       artist
       artwork
+      imageUri
       albumId
       album {
         id

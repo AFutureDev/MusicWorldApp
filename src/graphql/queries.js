@@ -6,7 +6,7 @@ export const getAlbumCategory = /* GraphQL */ `
     getAlbumCategory(id: $id) {
       id
       title
-      Albums {
+      albums {
         items {
           id
           name
@@ -35,8 +35,13 @@ export const listAlbumCategorys = /* GraphQL */ `
       items {
         id
         title
-        Albums {
+        albums {
           nextToken
+          items {
+            id
+            imageUri
+            name
+          }
         }
         createdAt
         updatedAt
@@ -57,11 +62,11 @@ export const getAlbum = /* GraphQL */ `
       songs {
         items {
           id
-          imageUri
           url
           title
           artist
           artwork
+          imageUri
           albumId
           createdAt
           updatedAt
@@ -72,7 +77,7 @@ export const getAlbum = /* GraphQL */ `
       albumCategory {
         id
         title
-        Albums {
+        albums {
           nextToken
         }
         createdAt
@@ -118,11 +123,11 @@ export const getSong = /* GraphQL */ `
   query GetSong($id: ID!) {
     getSong(id: $id) {
       id
-      imageUri
       url
       title
       artist
       artwork
+      imageUri
       albumId
       album {
         id
@@ -158,11 +163,11 @@ export const listSongs = /* GraphQL */ `
     listSongs(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        imageUri
         url
         title
         artist
         artwork
+        imageUri
         albumId
         album {
           id

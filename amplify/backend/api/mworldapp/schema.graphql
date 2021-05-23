@@ -1,7 +1,7 @@
 type AlbumCategory @model {
   id: ID!
   title: String!
-  Albums: [Album] @connection(keyName: "byAlbumCategory", fields: ["id"])
+  albums: [Album] @connection(keyName: "byAlbumCategory", fields: ["id"])
 }
 
 type Album @model @key(name: "byAlbumCategory", fields: ["albumCategoryId"]) {
@@ -20,11 +20,11 @@ type Album @model @key(name: "byAlbumCategory", fields: ["albumCategoryId"]) {
 
 type Song @model @key(name: "byAlbum", fields: ["albumId"]) {
   id: ID!
-  imageUri: String!
   url: String!
   title: String!
   artist: String!
   artwork: String!
+  imageUri: String!
 
   albumId: ID!
   album: Album @connection(fields: ["albumId"])

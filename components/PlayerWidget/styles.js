@@ -19,8 +19,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     image: {
-        width: 65,
-        height: 65,
+        width: 60,
+        height: 60,
         marginRight: 5,
     },
     rightContainer: {

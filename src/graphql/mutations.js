@@ -9,7 +9,7 @@ export const createAlbumCategory = /* GraphQL */ `
     createAlbumCategory(input: $input, condition: $condition) {
       id
       title
-      Albums {
+      albums {
         items {
           id
           name
@@ -36,7 +36,7 @@ export const updateAlbumCategory = /* GraphQL */ `
     updateAlbumCategory(input: $input, condition: $condition) {
       id
       title
-      Albums {
+      albums {
         items {
           id
           name
@@ -63,7 +63,7 @@ export const deleteAlbumCategory = /* GraphQL */ `
     deleteAlbumCategory(input: $input, condition: $condition) {
       id
       title
-      Albums {
+      albums {
         items {
           id
           name
@@ -97,11 +97,11 @@ export const createAlbum = /* GraphQL */ `
       songs {
         items {
           id
-          imageUri
           url
           title
           artist
           artwork
+          imageUri
           albumId
           createdAt
           updatedAt
@@ -112,7 +112,7 @@ export const createAlbum = /* GraphQL */ `
       albumCategory {
         id
         title
-        Albums {
+        albums {
           nextToken
         }
         createdAt
@@ -138,11 +138,11 @@ export const updateAlbum = /* GraphQL */ `
       songs {
         items {
           id
-          imageUri
           url
           title
           artist
           artwork
+          imageUri
           albumId
           createdAt
           updatedAt
@@ -153,7 +153,7 @@ export const updateAlbum = /* GraphQL */ `
       albumCategory {
         id
         title
-        Albums {
+        albums {
           nextToken
         }
         createdAt
@@ -179,11 +179,11 @@ export const deleteAlbum = /* GraphQL */ `
       songs {
         items {
           id
-          imageUri
           url
           title
           artist
           artwork
+          imageUri
           albumId
           createdAt
           updatedAt
@@ -194,7 +194,7 @@ export const deleteAlbum = /* GraphQL */ `
       albumCategory {
         id
         title
-        Albums {
+        albums {
           nextToken
         }
         createdAt
@@ -212,11 +212,11 @@ export const createSong = /* GraphQL */ `
   ) {
     createSong(input: $input, condition: $condition) {
       id
-      imageUri
       url
       title
       artist
       artwork
+      imageUri
       albumId
       album {
         id
@@ -250,11 +250,11 @@ export const updateSong = /* GraphQL */ `
   ) {
     updateSong(input: $input, condition: $condition) {
       id
-      imageUri
       url
       title
       artist
       artwork
+      imageUri
       albumId
       album {
         id
@@ -288,11 +288,11 @@ export const deleteSong = /* GraphQL */ `
   ) {
     deleteSong(input: $input, condition: $condition) {
       id
-      imageUri
       url
       title
       artist
       artwork
+      imageUri
       albumId
       album {
         id

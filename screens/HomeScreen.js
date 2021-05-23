@@ -1,71 +1,63 @@
-import React from 'react';
- import {
-   StyleSheet, View, Text, FlatList
- } from 'react-native';
+  
+import * as React from 'react';
+import { StyleSheet, FlatList, View  } from 'react-native';
 
-import Album from '../components/Album';
+import {API, graphqlOperation} from 'aws-amplify';
+
 import AlbumCategory from '../components/AlbumCategory';
 import albumCategories from '../data/albumCategories';
+import { listAlbumCategorys } from '../src/graphql/queries';
+import {useEffect, useState} from "react";
 
-// const album = {
-//   id: '1',
-//   imageUri: 'https://i.ytimg.com/vi/sw7mB_PfPc0/maxresdefault.jpg',
-//   artistsHeadline: 'Zubi - JuJu (feat. Anatu & Rusalka)',
-// }
+export default function HomeScreen() {
 
-// const albumCategory = {
-//   id: '1',
-//   title: 'Deep House',
-//   albums: [
-//     {
-//       id: '1',
-//       imageUri: 'https://i.ytimg.com/vi/sw7mB_PfPc0/maxresdefault.jpg',
-//       artistsHeadline: 'Zubi - JuJu (feat. Anatu & Rusalka)'
-//     },
-//     {
-//       id: '2',
-//       imageUri: 'https://i.ytimg.com/vi/y1gNa3Kimg8/maxresdefault.jpg',
-//       artistsHeadline: 'Ablaikan - Uletay (feat. VERA)'
-//     },
-//     {
-//       id: '3',
-//       imageUri: 'https://i.ytimg.com/vi/_rLGRvO6MPE/maxresdefault.jpg',
-//       artistsHeadline: 'КИНО - Кукушка (Almaz Remix)'
-//     },
-//     {
-//       id: '4',
-//       imageUri: 'https://i1.sndcdn.com/artworks-8C9szN0kYyoL85wM-2edTiw-t500x500.png',
-//       artistsHeadline: 'КУЧЕР & JANAGA - По щекам слёзы'
-//     }
-//   ]
-// };
- 
- 
- const HomeScreen = () => {
-   return (
-    
-     <View style={styles.container}>
-      <FlatList 
-        data={albumCategories}
-        renderItem={({ item }) => 
-          <AlbumCategory 
-            title={item.title} 
-            albums={item.albums}
-          />}
-          keyExtractor={(item) => item.id }
-      />
-     </View>
-   )
- };
- 
- const styles = StyleSheet.create({
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchAlbumCategories = async () => {
+      try {
+        const data = await API.graphql(graphqlOperation(listAlbumCategorys));
+        console.log(data.data.listAlbumCategorys.items)
+        setCategories(data.data.listAlbumCategorys.items);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    fetchAlbumCategories();
+  }, []);
+
+
+  return (
+    <View style={styles.container}>
+       <FlatList
+         data={categories}
+         renderItem={({ item }) => (
+           <AlbumCategory
+             title={item.title}
+             albums={item.albums.items}
+           />
+         )}
+         keyExtractor={(item) => item.id}
+       />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 55,
-  }
- });
- 
- export default HomeScreen;
- 
+    marginBottom: 30,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  separator: {
+    marginVertical: 30,
+    height: 1,
+    width: '80%',
+  },
+});
