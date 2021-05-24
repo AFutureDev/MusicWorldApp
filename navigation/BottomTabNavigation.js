@@ -13,45 +13,86 @@ import SearchScreen from '../screens/SearchScreen';
 import PlayerScreen from '../screens/PlayerScreen';
 import LibraryScreen from '../screens/LibraryScreen';
 import AlbumScreen from '../screens/AlbumScreen';
-import PlayerWidget from '../components/PlayerWidget';
-import Profile from '../screens/ProfileScreen';
-import ProfileScreen from '../screens/ProfileScreen';
-import MyStack from '../routes/MyStack';
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 function MyTabs() {
+
     return (
       <Tab.Navigator>
+         <Tab.Screen 
+            name="Home"
+            options={{
+              tabBarIcon: ({color}) => <FontAwesome name="home" size={30} style={{ marginBottom: -3 }} color={color}/>,
+            }}  >
+          {() => (
+            <Stack.Navigator>
+              <Stack.Screen
+                name="Music World"
+                component={HomeScreen}  
+              />
+              <Stack.Screen name="AlbumScreen" component={AlbumScreen} />
+            </Stack.Navigator>
+          )}
+        </Tab.Screen>
         <Tab.Screen 
+            name="Search"
+            options={{
+              tabBarIcon: ({color}) => <Feather name="search" size={30} style={{ marginBottom: -3 }} color={color} />,
+              }} >
+          {() => (
+            <Stack.Navigator>
+              <Stack.Screen
+                name="Search"
+                component={SearchScreen}  
+              />
+            </Stack.Navigator>
+          )}
+        </Tab.Screen>
+        <Tab.Screen 
+            name="Library"
+            options={{
+              tabBarIcon: ({color}) => <MaterialIcons name="library-music" size={30} style={{ marginBottom: -3 }} color={color} />,
+            }} >
+          {() => (
+            <Stack.Navigator>
+              <Stack.Screen
+                name="Library"
+                component={LibraryScreen}  
+              />
+            </Stack.Navigator>
+          )}
+        </Tab.Screen>
+        {/* <Tab.Screen 
             name="Home" 
             component={HomeScreen} 
             options={{
                 tabBarIcon: ({color}) => <FontAwesome name="home" size={30} style={{ marginBottom: -3 }} color={color}/>,
             }}      
-        />
-        <Tab.Screen 
+        /> */}
+        {/* <Tab.Screen 
             name="AlbumScreen"
             component={AlbumScreen} 
             options={{
                 tabBarIcon: ({color}) => <MaterialIcons name="album" size={30} style={{ marginBottom: -3 }} color={color}/>,
             }}      
-        />
-        <Tab.Screen 
+        /> */}
+        {/* <Tab.Screen 
             name="Search" 
             component={SearchScreen} 
             options={{
                 tabBarIcon: ({color}) => <Feather name="search" size={30} style={{ marginBottom: -3 }} color={color} />,
             }}      
-        />
-        <Tab.Screen 
+        /> */}
+        {/* <Tab.Screen 
             name="Library" 
             component={LibraryScreen} 
             options={{
                 tabBarIcon: ({color}) => <MaterialIcons name="library-music" size={30} style={{ marginBottom: -3 }} color={color} />,
             }}      
-        />
+        /> */}
         <Tab.Screen
             name="Player"
             component={PlayerScreen}
@@ -60,7 +101,7 @@ function MyTabs() {
             }}
              />
       </Tab.Navigator>
-    );
+    )
   }
 
 const BottomTabNavigation = () => {

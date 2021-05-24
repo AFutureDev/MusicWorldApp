@@ -10,7 +10,6 @@ import PlayerWidget from './components/PlayerWidget';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import PlayerScreen from './screens/PlayerScreen';
 import { NavigationContainer } from '@react-navigation/native';
-import MyStack from './routes/MyStack';
 
 
 const App = () => {
