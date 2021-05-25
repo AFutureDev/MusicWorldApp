@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { Text, View, Image, FlatList, TouchableOpacity, TouchableHighlight, Button } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -15,9 +15,7 @@ import TrackPlayer, { usePlaybackState,
 import tracks from '../../data/playlist';
 
 import styles from './styles';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import PlayerScreen from '../../screens/PlayerScreen';
+import { AppContext } from '../../AppContext';
 
 
 // const songDet = {
@@ -61,6 +59,8 @@ const PlayerWidget = ({ navigation }) => {
     const [trackTitle, setTrackTitle] = useState("");
     const [trackArtwork, setTrackArtwork] = useState();
     const [trackArtist, setTrackArtist] = useState("");
+
+    const { songId } = useContext(AppContext)
 
     useTrackPlayerEvents(events, (event) => {
         if (event.type === TrackPlayerEvents.PLAYBACK_ERROR) {
@@ -152,7 +152,7 @@ const PlayerWidget = ({ navigation }) => {
               <View style={styles.row}>
               <Image source={{ uri: trackArtwork }} style={styles.image} />  
                 <View style={styles.nameContainer}>
-                  <Text style={styles.title}>{ trackTitle }</Text>
+                  <Text style={styles.title}>{songId}{ trackTitle }</Text>
                   <Text style={styles.artist}>{ trackArtist }</Text>
                 </View>
                 <View style={styles.rightContainer}>

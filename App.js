@@ -1,22 +1,25 @@
 import React, { useState } from 'react';
-import {
-  Button,
-  SafeAreaView,
-  StyleSheet, TouchableHighlight, View,
-} from 'react-native';
-import HomeScreen from './screens/HomeScreen';
 import BottomTabNavigation from './navigation/BottomTabNavigation';
 import PlayerWidget from './components/PlayerWidget';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import PlayerScreen from './screens/PlayerScreen';
-import { NavigationContainer } from '@react-navigation/native';
 
+import { AppContext } from './AppContext';
 
 const App = () => {
+
+  //const [songId, setSongId] = useState<String|null>(null);
+  const [songId, setSongId] = useState(null);
+
+
   return (
     <SafeAreaProvider>
-       <BottomTabNavigation />
-       <PlayerWidget />
+      <AppContext.Provider value={{
+        songId,
+        setSongId: (id) => setSongId(id),
+      }}>
+        <BottomTabNavigation />
+        <PlayerWidget />
+       </AppContext.Provider>
     </SafeAreaProvider>
   )
 };
