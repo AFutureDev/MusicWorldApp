@@ -1,7 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Button } from 'react-native';
 import TrackPlayer, { useTrackPlayerProgress } from 'react-native-track-player';
 import tracks from '../data/playlist';
+import { AppContext } from '../AppContext';
+import { API, graphqlOperation } from 'aws-amplify';
+import { getSong } from '../src/graphql/queries';
 
 TrackPlayer.updateOptions({
   stopWithApp: true,
@@ -13,6 +16,24 @@ const PlayerScreen = ({navigation}) => {
 
   const progress = TrackPlayer.useTrackPlayerProgress();
   const { position, bufferedPosition, duration } = useTrackPlayerProgress(1000, null)
+  const [song, setSong] = useState(null);
+
+  const { songId } = useContext(AppContext);
+
+  useEffect(() => {
+    // fetch data about song 
+    const fetchSong = async () => {
+      try{
+        const data = await API.graphql(graphqlOperation(getSong, { id: songId }))
+        console.log(data);
+        setSong(data.data.getSong);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    fetchSong();
+  }, [songId])
 
   const getProgress = () => {
     return (position / duration) * 100;
@@ -50,6 +71,10 @@ const PlayerScreen = ({navigation}) => {
 
     return () => TrackPlayer.destroy();
   }, [])
+
+  // if(!song){
+  //   return null;
+  // }
 
   return(
     <View style={styles.container}>

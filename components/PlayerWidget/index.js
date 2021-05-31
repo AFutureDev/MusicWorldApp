@@ -10,12 +10,15 @@ import TrackPlayer, { usePlaybackState,
                       useTrackPlayerProgress,
                       getDuration,
                       getPosition,
+                      setupPlayer,
                       } from 'react-native-track-player';
 
 import tracks from '../../data/playlist';
 
 import styles from './styles';
 import { AppContext } from '../../AppContext';
+import { API, graphqlOperation } from 'aws-amplify';
+import { getSong } from '../../src/graphql/queries';
 
 
 // const songDet = {
@@ -59,8 +62,24 @@ const PlayerWidget = ({ navigation }) => {
     const [trackTitle, setTrackTitle] = useState("");
     const [trackArtwork, setTrackArtwork] = useState();
     const [trackArtist, setTrackArtist] = useState("");
+    const [song, setSong] = useState(null);
 
-    const { songId } = useContext(AppContext)
+    const { songId } = useContext(AppContext);
+
+    // useEffect(() => {
+    //   // fetch data about song 
+    //   const fetchSong = async () => {
+    //     try{
+    //       const data = await API.graphql(graphqlOperation(getSong, { id: songId }))
+    //       console.log(data);
+    //       setSong(data.data.getSong);
+    //     } catch (e) {
+    //       console.log(e);
+    //     }
+    //   }
+
+    //   fetchSong();
+    // }, [songId])
 
     useTrackPlayerEvents(events, (event) => {
         if (event.type === TrackPlayerEvents.PLAYBACK_ERROR) {
@@ -75,36 +94,64 @@ const PlayerWidget = ({ navigation }) => {
 
     useTrackPlayerEvents(["playback-track-changed"], async event => {
       if (event.type === TrackPlayer.TrackPlayerEvents.PLAYBACK_TRACK_CHANGED) {
+        const data = await API.graphql(graphqlOperation(getSong, { id: songId }))
         const track = await TrackPlayer.getTrack(event.nextTrack);
-        const { title, artist, artwork, } = track || {};
-        setTrackTitle(title);
-        setTrackArtist(artist);
-        setTrackArtwork(artwork);
+        const { title, artist, artwork, } = data || {};
+        setTrackTitle(data.data.getSong.title);
+        setTrackArtist(data.data.getSong.artist);
+        setTrackArtwork(data.data.getSong.artwork);
       }
     });
     
 
-    const setUpTrackPlayer = async () => {
-        try{
-          await TrackPlayer.setupPlayer();
-          await TrackPlayer.add(tracks);
-          console.log('Tracks added');
-        } catch(e) {
-          console.log(e);
-        }
-      }
+    // const setUpTrackPlayer = async () => {
+    //     try{
+    //       const data = await API.graphql(graphqlOperation(getSong, { id: songId }))
+    //       //console.log(data);
+    //       //setSong(data.data.getSong);
+    //       await TrackPlayer.setupPlayer();
+    //       await TrackPlayer.add(data.data.getSong.songId);
+    //       console.log('Tracks added');
+    //     } catch(e) {
+    //       console.log(e);
+    //     }
+    //   }
+
+
+      // useEffect(() => {
+      //   // fetch data about song 
+      //   const setUpTrackPlayer = async () => {
+      //     try{
+      //       const data = await API.graphql(graphqlOperation(getSong, { id: songId }))
+      //       console.log(data);
+      //       setSong(data.data.getSong);
+      //     } catch (e) {
+      //       console.log(e);
+      //     }
+      //   }
+  
+      //   setUpTrackPlayer();
+      // }, [songId])
     
       useEffect(() => {
-        setUpTrackPlayer();
+        const setUpTrackPlayer = async () => {
+          try{
+            const data = await API.graphql(graphqlOperation(getSong, { id: songId }))
+            console.log(data);
+            setSong(data.data.getSong);
+          } catch (e) {
+            console.log(e);
+          }
+        } 
+  
         TrackPlayer.updateOptions({
           stopWithApp: false,
           capabilities: 
           [
             TrackPlayer.CAPABILITY_PLAY,
             TrackPlayer.CAPABILITY_PAUSE,
+            TrackPlayer.CAPABILITY_STOP,
             TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
-            TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
-            TrackPlayer.CAPABILITY_STOP
         ],
           compactCapabilities: [
             TrackPlayer.CAPABILITY_PLAY,
@@ -116,7 +163,7 @@ const PlayerWidget = ({ navigation }) => {
         setUpTrackPlayer();
     
         return () => TrackPlayer.destroy();
-      }, [])
+      }, [songId])
 
       
       const onPressPlayPauseButton = async () => {
@@ -130,11 +177,13 @@ const PlayerWidget = ({ navigation }) => {
         async function togglePlayback() {
           const currentTrack = await TrackPlayer.getCurrentTrack();
           if (currentTrack == null) {
+            const data = await API.graphql(graphqlOperation(getSong, { id: songId }))
             await TrackPlayer.reset();
-            await TrackPlayer.add(tracks);
+            await TrackPlayer.add(data.data.getSong);
             await TrackPlayer.play();
           } else {
             if (playbackState === TrackPlayer.STATE_PAUSED) {
+              const data = await API.graphql(graphqlOperation(getSong, { id: songId }))
               await TrackPlayer.play();
             } else {
               await TrackPlayer.pause();
@@ -142,6 +191,9 @@ const PlayerWidget = ({ navigation }) => {
           }
         }
     
+        if(!song){
+          return null;
+        }
 
         return (
             <View style={styles.container}>
@@ -152,7 +204,7 @@ const PlayerWidget = ({ navigation }) => {
               <View style={styles.row}>
               <Image source={{ uri: trackArtwork }} style={styles.image} />  
                 <View style={styles.nameContainer}>
-                  <Text style={styles.title}>{songId}{ trackTitle }</Text>
+                  <Text style={styles.title}>{ trackTitle }</Text>
                   <Text style={styles.artist}>{ trackArtist }</Text>
                 </View>
                 <View style={styles.rightContainer}>
@@ -162,9 +214,6 @@ const PlayerWidget = ({ navigation }) => {
                         </TouchableOpacity>
                         <TouchableOpacity onPress={togglePlayback}>
                             <FontAwesome name={isPlaying ? 'pause' : 'play'} size={30} style={{ color: "#000"}}/>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => TrackPlayer.skipToNext()}>
-                            <Entypo name="controller-next" size={30} />
                         </TouchableOpacity>
                     </View>
                 </View>

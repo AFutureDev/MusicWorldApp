@@ -17,7 +17,6 @@ export default function HomeScreen() {
     const fetchAlbumCategories = async () => {
       try {
         const data = await API.graphql(graphqlOperation(listAlbumCategorys));
-        console.log(data.data.listAlbumCategorys.items)
         setCategories(data.data.listAlbumCategorys.items);
       } catch (e) {
         console.log(e);
